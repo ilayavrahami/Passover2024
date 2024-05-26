@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Basket</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .delete-btn {
+            cursor: pointer;
+            color: red;
+        }
+    </style>
+</head>
+<body dir="rtl">
+    <h1>סל קניות</h1>
+    <ul id="cartItems"></ul>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            displayCartItems();
+        });
+
+        function displayCartItems() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let cartItems = document.getElementById('cartItems');
+
+            cart.forEach(function(item) {
+                let li = document.createElement('li');
+                li.textContent = item;
+
+                let deleteBtn = document.createElement('span');
+                deleteBtn.textContent = 'X';
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.addEventListener('click', function() {
+                    removeFromCart(item);
+                });
+
+                li.appendChild(deleteBtn);
+                cartItems.appendChild(li);
+            });
+        }
+
+        function removeFromCart(item) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let updatedCart = cart.filter(product => product !== item);
+            localStorage.setItem('cart', JSON.stringify(updatedCart));
+            location.reload(); 
+        }
+    </script>
+</body>
+</html>
